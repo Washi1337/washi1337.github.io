@@ -1,56 +1,46 @@
-body
-{
+body {
     background-color: #101010;
 }
 
-@font-face 
-{
+@font-face {
     font-family: 'Ubuntu Regular';
     src: url('../assets/Ubuntu-Regular.ttf') format('truetype');
 }
 
 
-.slide-container
-{
+.slide-container {
     font-family: 'Ubuntu Regular', sans-serif;
     text-align: center;
     color: white;
 }
 
-.slide
-{
-}
+.slide {}
 
-.avatar-container
-{
+.avatar-container {
     position: relative;
     animation-name: avatar-fade-in-animation;
     animation-duration: 4s;
     animation-timing-function: ease-out;
 }
 
-.avatar-container > img
-{
+.avatar-container>img {
     width: 300px;
     margin: 50px;
 }
 
-@keyframes avatar-fade-in-animation
-{
-    from 
-    {
+@keyframes avatar-fade-in-animation {
+    from {
         opacity: 0;
         top: -50px;
     }
-    to 
-    {
+
+    to {
         opacity: 1;
         top: 0px;
     }
 }
 
-.title-container
-{
+.title-container {
     margin: 50px;
     position: relative;
     animation-name: title-fade-in-animation;
@@ -58,41 +48,35 @@ body
     animation-timing-function: ease-out;
 }
 
-@keyframes title-fade-in-animation
-{
-    from 
-    {
+@keyframes title-fade-in-animation {
+    from {
         opacity: 0;
         top: 50px;
     }
-    to 
-    {
+
+    to {
         opacity: 1;
         top: 0px;
     }
 }
 
-.links-container
-{
+.links-container {
     display: table;
     margin: 0 auto;
 }
 
-.links-container > ul
-{
-	width: 100%;
+.links-container>ul {
+    width: 100%;
     display: flex;
-	list-style: none;
-    padding-left:0;
+    list-style: none;
+    padding-left: 0;
 }
 
-.links-container > ul > li
-{
+.links-container>ul>li {
     position: relative;
     opacity: 0;
-	width: 130px;
     display: inline-block;
-    float:none;
+    float: none;
     padding: 10px;
     animation-name: link-fade-in-animation;
     animation-duration: 0.5s;
@@ -100,48 +84,77 @@ body
     animation-fill-mode: forwards;
 }
 
-.links-container > ul > li:nth-of-type(1)
-{
+.links-container-main>ul>li {
+    width: 130px;
+}
+
+.links-container>ul>li:nth-of-type(1) {
+    animation-delay: 2.4s;
+}
+
+.links-container>ul>li:nth-of-type(2) {
     animation-delay: 2.5s;
 }
 
-.links-container > ul > li:nth-of-type(2)
-{
+.links-container>ul>li:nth-of-type(3) {
     animation-delay: 2.6s;
 }
 
-.links-container > ul > li:nth-of-type(3)
-{
+.links-container>ul>li:nth-of-type(4) {
     animation-delay: 2.7s;
 }
 
-.links-container > ul > li:nth-of-type(4)
-{
+.links-container>ul>li:nth-of-type(5) {
     animation-delay: 2.8s;
 }
 
-.links-container > ul > li:nth-of-type(5)
-{
+.links-container>ul>li:nth-of-type(6) {
     animation-delay: 2.9s;
 }
 
-@keyframes link-fade-in-animation
-{
-    from 
-    {
+@keyframes link-fade-in-animation {
+    from {
         opacity: 0;
         top: 50px;
     }
-    to 
-    {
+
+    to {
         opacity: 1;
         top: 0px;
     }
 }
 
+a {
+    font-size:13pt;
+    color: #aaa;
+    text-decoration: none;
+}
 
-a.button
-{
+a:link {
+    color: #aaa;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #aaa;
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: #151515;
+    color: white;
+    text-decoration: none;
+    transform: scale(1.1);
+    transition: linear 0.1s;
+}
+
+a:active {
+    color: white;
+    text-decoration: none;
+}
+
+
+a.button {
     font-weight: bold;
     padding: 10px;
     display: block;
@@ -153,27 +166,64 @@ a.button
     box-shadow: black 0px 3px;
 }
 
-a.button:link 
-{
+a.button:link {
     color: white;
     text-decoration: none;
 }
 
-a:visited
-{
+a.button:visited {
     color: white;
     text-decoration: none;
 }
 
-a:hover 
-{
+a.button:hover {
     background-color: #151515;
     color: white;
     text-decoration: none;
+    transform: scale(1.1);
+    transition: linear 0.1s;
 }
 
-a:active 
-{
+a.button:active {
     color: white;
     text-decoration: none;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    /* visibility: hidden; */
+    width: 120px;
+    background-color: #080808;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 175%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    box-shadow: black 0px 3px;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #080808 transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    opacity: 1;
+    transition: linear 0.1s;
 }
