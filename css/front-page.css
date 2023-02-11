@@ -41,7 +41,6 @@ body {
 }
 
 .title-container {
-    margin: 50px;
     position: relative;
     animation-name: title-fade-in-animation;
     animation-duration: 3s;
@@ -124,35 +123,33 @@ body {
     }
 }
 
-a {
-    font-size:13pt;
+a.social {
+    font-size:14pt;
     color: #aaa;
     text-decoration: none;
 }
 
-a:link {
+a.social:link {
     color: #aaa;
     text-decoration: none;
 }
 
-a:visited {
+a.social:visited {
     color: #aaa;
     text-decoration: none;
 }
 
-a:hover {
-    background-color: #151515;
+a.social:hover {
     color: white;
     text-decoration: none;
     transform: scale(1.1);
     transition: linear 0.1s;
 }
 
-a:active {
+a.social:active {
     color: white;
     text-decoration: none;
 }
-
 
 a.button {
     font-weight: bold;
