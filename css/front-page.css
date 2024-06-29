@@ -24,8 +24,8 @@ body {
 }
 
 .avatar-container>img {
-    width: 300px;
-    margin: 50px;
+    width: 250px;
+    margin: 25px;
 }
 
 @keyframes avatar-fade-in-animation {
@@ -123,6 +123,75 @@ body {
     }
 }
 
+.projects-container>hr {
+    opacity: 0;
+    width:20px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    color: #303030;
+    animation-name: projects-fade-in-animation;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    animation-delay: 3s;
+}
+
+.projects-container>h3 {
+    opacity: 0;
+    animation-name: projects-fade-in-animation;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    animation-delay: 3.5s;
+}
+
+.projects-container>ul{
+    list-style: none;
+    padding-left: 0;
+}
+
+.projects-container>ul>li {
+    position: relative;
+    opacity: 0;
+    animation-name: projects-fade-in-animation;
+    animation-duration: 03s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+.projects-container>ul>li:nth-of-type(1) {
+    animation-delay: 3.6s;
+}
+
+.projects-container>ul>li:nth-of-type(2) {
+    animation-delay: 3.7s;
+}
+
+.projects-container>ul>li:nth-of-type(3) {
+    animation-delay: 3.8s;
+}
+
+.projects-container>ul>li:nth-of-type(4) {
+    animation-delay: 3.9s;
+}
+
+.projects-container>ul>li:nth-of-type(5) {
+    animation-delay: 4.0s;
+}
+
+.projects-container>ul>li:nth-of-type(6) {
+    animation-delay: 4.1s;
+}
+
+@keyframes projects-fade-in-animation {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 a.social {
     font-size:14pt;
     color: #aaa;
@@ -149,6 +218,33 @@ a.social:hover {
 a.social:active {
     color: white;
     text-decoration: none;
+}
+
+a.project {
+    font-size:10pt;
+    color: #aaa;
+    text-decoration: underline;
+}
+
+a.project:link {
+    color: #aaa;
+    text-decoration: underline;
+}
+
+a.project:visited {
+    color: #aaa;
+    text-decoration: underline;
+}
+
+a.project:hover {
+    color: white;
+    text-decoration: underline;
+    transition: linear 0.1s;
+}
+
+a.project:active {
+    color: white;
+    text-decoration: underline;
 }
 
 a.button {
@@ -187,6 +283,7 @@ a.button:active {
 }
 
 .tooltip {
+    z-index: 100;
     position: relative;
     display: inline-block;
     border-bottom: 1px dotted black;

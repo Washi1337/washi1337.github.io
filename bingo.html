@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="A bingo card for the Annual FLARE-On Reverse Engineering Challenge organized by Mandiant" />
+    <meta property="og:title" content="FLARE-On Bingo" />
+    <meta property="og:description" content="A bingo card for the Annual FLARE-On Reverse Engineering Challenge organized by Mandiant" />
+    <meta property="og:locale" content="en" />
+
+    <title>FLARE-On Bingo</title>
+
+    <link rel="stylesheet" href="css/bingo.css">
+
+    <script>
+        const ALL_ENTRIES = [
+            "Medal of previous year not received before next CTF started",
+            "mOrE LaYerS = mOrE fUn",
+            "Weird architecture from the stone ages",
+            "Python challenge that can be bypassed with PyInjector" ,
+            "Fake flag",
+            "Javascript...",
+            "Guess-what-the-author-wants challenge",
+            ".NET challenge" ,
+            "CTF web portal is down",
+            "People downloading challenges from VirusTotal",
+            "Z3 go brrrr",
+            "Plaintext flag appeared out of nowhere in memory",
+            "Flag is not in the right format",
+            "Useless trivia galore (2021 challenge 5 Flare VM)",
+            "15MB+ MFC C++ Garbage Binary",
+            "Players caught cheating / final scoreboard adjusted by admins",
+            "Jinmo123 wins again",
+            "First winner solves all within 24 hours",
+            "Rickroll",
+            "RC4 encryption",
+            "Actual malware",
+            "Challenge author advertises their Twitter account",
+            "Android challenge",
+            "Challenge includes a packet capture (.npcapng)",
+            "Golang challenge",
+            "Rust challenge",
+            "AutoIt challenge",
+            "VM challenge",
+            "Reversing challenge is actually a crypto challenge",
+            "IsDebuggerPresent as an anti-analysis technique",
+            "Binary traverses the TEB/PEB",
+            "Indirect API calls via hash lookup",
+            "Challenge is bugged",
+            "Solved with ChatGPT",
+            "Esoteric language challenge",
+            "Reflective Loader",
+            "Replay attack just works",
+            "Challenge requires some specific obscure software to solve",
+            "Challenge authors trash talk the player in descriptions/binary strings",
+            "Intended solution is at least 2x as complicated as real solution",
+            "Decompiler fully deobfuscates all code out-of-the-box",
+            "Decompiler fails its stack analysis on a function",
+            "Accidentally ran malware on host machine"
+        ];
+
+        class Randomizer 
+        {
+            constructor(seed) {
+                this.seed = seed || Date.now() & 0xFFFFFFFF;
+            }
+
+            next() {
+                // Robert Jenkins' 32 bit integer hash function.
+                this.seed = this.seed & 0xffffffff
+                this.seed = (this.seed + 0x7ed55d16 + (this.seed << 12)) & 0xffffffff
+                this.seed = (this.seed ^ 0xc761c23c ^ (this.seed >>> 19)) & 0xffffffff
+                this.seed = (this.seed + 0x165667b1 + (this.seed << 5)) & 0xffffffff
+                this.seed = ((this.seed + 0xd3a2646c) ^ (this.seed << 9)) & 0xffffffff
+                this.seed = (this.seed + 0xfd7046c5 + (this.seed << 3)) & 0xffffffff
+                this.seed = (this.seed ^ 0xb55a4f09 ^ (this.seed >>> 16)) & 0xffffffff
+                return (this.seed & 0xfffffff) / 0x10000000
+            }
+
+            nextInt(min, max) {
+                return Math.floor(this.next() * (max - min) + min);
+            }
+        }
+
+        class BingoCard
+        {
+            constructor(container, width) {
+                this.container = container;
+                this.width = width;
+                
+                this.container.style.gridTemplateColumns = "repeat(" + width + ", minmax(0, 1fr))";
+        
+                this.state = Array(width * width).fill(false);
+
+                this.elements = Array(width * width);
+                for (let y = 0; y < this.width; y++) {
+                    for (let x = 0; x < this.width; x++) {
+                        let element = document.createElement("div");
+                        element.className = "bingo-card-item";
+                        element.onclick = this.toggleItem(x, y);
+                        this.elements[this.getIndex(x, y)] = element;
+                        this.container.appendChild(element);
+                    }
+                }
+
+                this.onchangeditem = function(x, y) {};
+                this.onchangedseed = function(seed) {};
+            }
+
+            getIndex(x, y) {
+                return y * this.width + x;
+            }
+
+            getChecked(x, y) {
+                return this.state[this.getIndex(x, y)];
+            }
+
+            setChecked(x, y, value) {
+                let index = this.getIndex(x, y);
+                if (this.state[index] != value) {    
+                    this.state[index] = value;
+                    if (value) {
+                        this.elements[index].classList.add("bingo-card-item-checked");
+                    } else {
+                        this.elements[index].classList.remove("bingo-card-item-checked");
+                    }
+                    this.onchangeditem(x, y);
+                }
+            }
+
+            toggleItem(x, y) {
+                let self = this;
+                return function() {
+                    self.setChecked(x, y, !self.getChecked(x, y));
+                }
+            }
+
+            reset() {
+                for (let y = 0; y < this.width; y++) {
+                    for (let x = 0; x < this.width; x++) {
+                        this.setChecked(x, y, false);
+                    }
+                }
+            }
+
+            importState(state) {
+                for (let y = 0; y < this.width; y++) {
+                    for (let x = 0; x < this.width; x++) {
+                        this.setChecked(x, y, !!state[this.getIndex(x, y)]);
+                    }
+                }
+            }
+
+            setSeed(seed) {
+                this.seed = seed;
+                
+                let remainingEntries = ALL_ENTRIES.slice();
+
+                let randomizer = new Randomizer(seed);
+                for (let y = 0; y < this.width; y++) {
+                    for (let x = 0; x < this.width; x++) {
+                        let text = "";
+                        if (x == Math.floor(this.width / 2) && y == Math.floor(this.width / 2)) {
+                            text = "Flare-On has started (FREE)";
+                        } else {
+                            let index = randomizer.nextInt(0, remainingEntries.length);
+                            text = remainingEntries[index];
+                            remainingEntries.splice(index, 1);
+                        }
+
+                        this.elements[this.getIndex(x, y)].innerText = text;
+                    }
+                }
+
+                this.onchangedseed(seed);
+            }
+        }
+
+        window.onload = function() 
+        {
+            const cardElement = document.getElementById("main-bingo-card");
+
+            let card = new BingoCard(cardElement, 5);
+
+            card.onchangeditem = function() {
+                localStorage.setItem("state", card.state.join(","));
+            }
+
+            card.onchangedseed = function() {
+                localStorage.setItem("seed", card.seed);
+                document.getElementById("seed-input").value = card.seed;
+            }
+
+            let seed = localStorage.getItem("seed");
+            if (seed == null) {
+                seed = Math.floor(Math.random() * 0xFFFFFFFF);
+                localStorage.setItem("seed", seed);
+            }
+            card.setSeed(seed);
+
+            let state = localStorage.getItem("state");
+            if (state != null) {
+                card.importState(state.split(",").map(function(x) { return x === "true" }));
+            }            
+
+            document.getElementById("reset-button").onclick = function() {
+                card.reset();
+            }
+
+            document.getElementById("set-seed-button").onclick = function() {
+                card.setSeed(document.getElementById("seed-input").value);
+            }
+
+            document.getElementById("random-seed-button").onclick = function() {
+                card.setSeed(Math.floor(Math.random() * 0xFFFFFFFF));
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <div class="main-container">
+        <h1>FLARE-ON BINGO</h1>
+        <h3>A bingo card for the Annual <a href="https://flare-on.com/">FLARE-On</a> Reverse Engineering Challenge organized by <a href="https://mandiant.com">Mandiant</a></h3>
+        <div id="main-bingo-card" class="bingo-card">
+        </div>
+        <div class="options-container">
+            <button id="reset-button">Clear All</button>
+        </div>
+        <div class="options-container">
+            <label for="seed">Card Seed:</label>
+            <input id="seed-input" type="number">
+            <button id="set-seed-button">Set Seed</button>
+            <button id="random-seed-button">Random Seed</button>
+        </div>
+        <p>Your bingo card is stored in your browser's local storage.</p>
+        <p style="font-size: 0.7em;">Made with... Javascript or something, IDK I am not a web developer. <a href="index.html">Check out my other stuff!</a></p>
+        <p style="font-size: 0.7em;">This website is developed independently for fun/satirical purposes and is not affiliated with the FLARE team, Mandiant or Google. It does not intend any malice to any of the parties involved.</p>
+    </div>
+</body>
+
+</html>
