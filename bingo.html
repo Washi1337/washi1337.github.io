@@ -27,10 +27,10 @@
             "Z3 go brrrr",
             "Plaintext flag appeared out of nowhere in memory",
             "Flag is not in the right format",
-            "Useless trivia galore (2021 challenge 5 Flare VM)",
+            "Challenge requires random (non-RE) trivia found on the internet",
             "15MB+ MFC C++ Garbage Binary",
             "Players caught cheating / final scoreboard adjusted by admins",
-            "Jinmo123 wins again",
+            "Usual top 5 wins again",
             "First winner solves all within 24 hours",
             "Rickroll",
             "RC4 encryption",
@@ -59,7 +59,7 @@
             "Accidentally ran malware on host machine"
         ];
 
-        class Randomizer 
+        class Randomizer
         {
             constructor(seed) {
                 this.seed = seed || Date.now() & 0xFFFFFFFF;
@@ -87,9 +87,9 @@
             constructor(container, width) {
                 this.container = container;
                 this.width = width;
-                
+
                 this.container.style.gridTemplateColumns = "repeat(" + width + ", minmax(0, 1fr))";
-        
+
                 this.state = Array(width * width).fill(false);
 
                 this.elements = Array(width * width);
@@ -117,7 +117,7 @@
 
             setChecked(x, y, value) {
                 let index = this.getIndex(x, y);
-                if (this.state[index] != value) {    
+                if (this.state[index] != value) {
                     this.state[index] = value;
                     if (value) {
                         this.elements[index].classList.add("bingo-card-item-checked");
@@ -153,7 +153,7 @@
 
             setSeed(seed) {
                 this.seed = seed;
-                
+
                 let remainingEntries = ALL_ENTRIES.slice();
 
                 let randomizer = new Randomizer(seed);
@@ -176,7 +176,7 @@
             }
         }
 
-        window.onload = function() 
+        window.onload = function()
         {
             const cardElement = document.getElementById("main-bingo-card");
 
@@ -201,7 +201,7 @@
             let state = localStorage.getItem("state");
             if (state != null) {
                 card.importState(state.split(",").map(function(x) { return x === "true" }));
-            }            
+            }
 
             document.getElementById("reset-button").onclick = function() {
                 card.reset();
